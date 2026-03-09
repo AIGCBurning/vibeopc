@@ -1,0 +1,218 @@
+---
+/**
+ * Showcase — Horizontal scroll gallery (Lando "Off Track" style)
+ * - GSAP ScrollTrigger pins the section
+ * - Content scrolls horizontally while page scrolls vertically
+ * - Cards with gradient overlays and hover effects
+ */
+const items = [
+  {
+    num: "01",
+    title: "AI Workflow\nAutomation",
+    desc: "Pre-built templates for content, code, design, and marketing — powered by the latest AI models.",
+    gradient: "linear-gradient(135deg, #2d5000 0%, #111112 100%)",
+  },
+  {
+    num: "02",
+    title: "Curated\nTool Stacks",
+    desc: "Battle-tested combinations of AI tools, APIs, and no-code platforms. Stop researching, start building.",
+    gradient: "linear-gradient(135deg, #3a1558 0%, #111112 100%)",
+  },
+  {
+    num: "03",
+    title: "Build In\nPublic",
+    desc: "Share your journey, get accountability partners, and grow your audience while you build your product.",
+    gradient: "linear-gradient(135deg, #153058 0%, #111112 100%)",
+  },
+  {
+    num: "04",
+    title: "OPC\nPlaybook",
+    desc: "Step-by-step guides from solo founders who've built $1M+ businesses. Real tactics, no fluff.",
+    gradient: "linear-gradient(135deg, #583000 0%, #111112 100%)",
+  },
+  {
+    num: "05",
+    title: "Weekly\nShowcase",
+    desc: "Submit your product, get community votes, win featured spots. The Product Hunt for solo builders.",
+    gradient: "linear-gradient(135deg, #005050 0%, #111112 100%)",
+  },
+];
+---
+
+<section class="showcase" id="showcase">
+  <div class="showcase__header container">
+    <div class="section-label" data-anim="clip-left">
+      <span class="section-label__dot"></span>
+      <span>What's Inside</span>
+    </div>
+    <h2 class="showcase__heading" data-split-text>
+      <div class="split-line"><span class="split-word">Built</span> <span class="split-word">for</span></div>
+      <div class="split-line"><span class="split-word showcase__lime">solo</span> <span class="split-word">builders.</span></div>
+    </h2>
+    <svg class="showcase__deco-line" viewBox="0 0 1200 60" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,30 Q300,60 600,30 T1200,30" stroke="var(--c-lime)" stroke-width="1" fill="none" data-draw-line />
+    </svg>
+  </div>
+
+  <div class="showcase__track-wrap" data-showcase-pin>
+    <div class="showcase__track" data-showcase-track>
+      {items.map((item) => (
+        <article class="showcase__card">
+          <div class="showcase__card-bg" style={`background: ${item.gradient};`}></div>
+          <canvas class="showcase__card-canvas" data-showcase-canvas aria-hidden="true"></canvas>
+          <div class="showcase__card-content">
+            <span class="showcase__card-num">{item.num}</span>
+            <h3 class="showcase__card-title" set:html={item.title.replace('\n', '<br/>')} />
+            <p class="showcase__card-desc">{item.desc}</p>
+          </div>
+          <div class="showcase__card-glow"></div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+.showcase {
+  padding-top: var(--section-pad);
+  position: relative;
+
+  &__header {
+    margin-bottom: clamp(48px, 6vw, 72px);
+  }
+
+  &__heading {
+    font-size: var(--fs-h1);
+  }
+  &__lime { color: var(--c-lime); }
+
+  &__deco-line {
+    width: 100%;
+    height: 60px;
+    display: block;
+    margin-top: clamp(16px, 2vw, 24px);
+    path {
+      stroke-dasharray: 1800;
+      stroke-dashoffset: 1800;
+      opacity: 0.3;
+    }
+  }
+
+  // Pin wrapper
+  &__track-wrap {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  &__track {
+    display: flex;
+    gap: clamp(16px, 2vw, 28px);
+    padding: 0 clamp(20px, 4vw, 48px) clamp(60px, 8vw, 100px);
+    width: max-content;
+    will-change: transform;
+  }
+
+  // Cards
+  &__card {
+    position: relative;
+    width: clamp(300px, 28vw, 420px);
+    height: clamp(380px, 40vw, 520px);
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid var(--c-border);
+    flex-shrink: 0;
+    cursor: default;
+    transition: border-color 0.6s var(--cubic), transform 0.6s var(--cubic);
+
+    &:hover {
+      border-color: rgba(210,255,0,0.2);
+      transform: translateY(-8px);
+
+      .showcase__card-glow { opacity: 1; }
+      .showcase__card-num { color: var(--c-lime); }
+    }
+  }
+
+  &__card-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  &__card-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.6;
+    mix-blend-mode: screen;
+  }
+
+  &__card-content {
+    position: relative;
+    z-index: 1;
+    padding: clamp(28px, 3vw, 40px);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 14px;
+  }
+
+  &__card-num {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 900;
+    font-size: clamp(4rem, 8vw, 6rem);
+    letter-spacing: -0.05em;
+    color: rgba(255,255,255,0.15);
+    position: absolute;
+    top: clamp(20px, 2vw, 32px);
+    right: clamp(20px, 2vw, 32px);
+    line-height: 1;
+    transition: color 0.6s var(--cubic);
+  }
+
+  &__card-title {
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+  }
+
+  &__card-desc {
+    color: var(--c-grey-1);
+    font-size: var(--fs-body);
+    line-height: 1.65;
+  }
+
+  &__card-glow {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(to top, rgba(210,255,0,0.03), transparent);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.6s var(--cubic);
+    z-index: 0;
+  }
+
+  // Mobile: vertical stack
+  @media (max-width: 768px) {
+    &__track-wrap {
+      overflow: visible;
+    }
+    &__track {
+      flex-direction: column;
+      width: 100%;
+    }
+    &__card {
+      width: 100%;
+      height: clamp(320px, 60vw, 420px);
+    }
+  }
+}
+
+</style>

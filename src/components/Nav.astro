@@ -1,0 +1,234 @@
+---
+/**
+ * Nav — Lando-style fixed nav with theme awareness
+ * - Backdrop-filter glass
+ * - Logo as inline text (not image)
+ * - Nav links with underline reveal on hover
+ * - CTA button with glow
+ */
+---
+
+<nav class="nav" id="nav" data-nav-theme="dark">
+  <div class="nav__progress" id="nav-progress" aria-hidden="true"></div>
+  <div class="nav__inner container-wide">
+    <!-- Brand -->
+    <a href="/" class="nav__brand" aria-label="vibeOPC Home">
+      <span class="nav__brand-v">VIBE</span><span class="nav__brand-o">OPC</span>
+    </a>
+
+    <!-- Center links (desktop) -->
+    <div class="nav__center" role="navigation" aria-label="Main">
+      <a href="#manifesto" class="nav__link" data-nav-link>Manifesto</a>
+      <a href="#pillars" class="nav__link" data-nav-link>Platform</a>
+      <a href="#stats" class="nav__link" data-nav-link>Movement</a>
+      <a href="#cta" class="nav__link" data-nav-link>Join</a>
+    </div>
+
+    <!-- CTA (desktop) -->
+    <a href="#cta" class="btn-primary nav__btn nav__btn--desktop">
+      <span class="btn-text"><span class="btn-text__inner" data-text="Join Waitlist">Join Waitlist</span></span>
+      <svg class="btn-icon" width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <!-- Hamburger (mobile) -->
+    <button class="nav__hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span class="nav__hamburger-line"></span>
+      <span class="nav__hamburger-line"></span>
+      <span class="nav__hamburger-line"></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile overlay -->
+<div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+  <div class="nav-mobile__inner">
+    <a href="#manifesto" class="nav-mobile__link" data-mobile-link>Manifesto</a>
+    <a href="#pillars" class="nav-mobile__link" data-mobile-link>Platform</a>
+    <a href="#stats" class="nav-mobile__link" data-mobile-link>Movement</a>
+    <a href="#cta" class="nav-mobile__link" data-mobile-link>Join</a>
+    <a href="#cta" class="btn-primary nav-mobile__btn" data-mobile-link>
+      <span class="btn-text"><span class="btn-text__inner" data-text="Join Waitlist">Join Waitlist</span></span>
+      <svg class="btn-icon" width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+</div>
+
+<style lang="scss">
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  height: var(--nav-h);
+  display: flex;
+  align-items: center;
+  // Lando-style glassmorphism
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: rgba(17,17,18,0.6);
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background var(--anim), border-color var(--anim), color 0.5s var(--cubic);
+
+  &__progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0%;
+    background: var(--c-lime);
+    z-index: 10;
+    transition: width 0.1s linear;
+    will-change: width;
+  }
+
+  &__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  // ─ Brand ─
+  &__brand {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 900;
+    font-size: 1.6rem;
+    letter-spacing: -0.05em;
+    transition: opacity 0.3s var(--cubic);
+    &:hover { opacity: 0.7; }
+  }
+  &__brand-v { color: var(--c-lime); transition: color 0.5s var(--cubic); }
+  &__brand-o { color: var(--c-white); transition: color 0.5s var(--cubic); }
+
+  // ─ Center links ─
+  &__center {
+    display: flex;
+    gap: clamp(24px, 3vw, 48px);
+    @media (max-width: 768px) { display: none; }
+  }
+  &__link {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 500;
+    font-size: var(--fs-tag);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--c-grey-1);
+    position: relative;
+    padding: 4px 0;
+    transition: color 0.4s var(--cubic);
+
+    // Underline expand on hover (Lando style)
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 1px;
+      background: var(--c-lime);
+      transition: width 0.6s var(--cubic);
+    }
+    &:hover {
+      color: var(--c-white);
+      &::after { width: 100%; }
+    }
+
+    &.is-active {
+      color: var(--c-white);
+      &::after { width: 100%; background: var(--c-lime); }
+    }
+  }
+
+  // ─ CTA button ─
+  &__btn {
+    padding: 10px 28px;
+    font-size: 0.72rem;
+    &--desktop {
+      @media (max-width: 768px) { display: none; }
+    }
+  }
+
+  // ─ Hamburger ─
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    z-index: 1001;
+
+    @media (max-width: 768px) { display: flex; }
+  }
+
+  &__hamburger-line {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--c-white);
+    border-radius: 2px;
+    transition: transform 0.4s var(--cubic), opacity 0.3s var(--cubic);
+    transform-origin: center;
+  }
+
+  // Open state (set by JS)
+  &__hamburger.is-open &__hamburger-line:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  &__hamburger.is-open &__hamburger-line:nth-child(2) {
+    opacity: 0;
+  }
+  &__hamburger.is-open &__hamburger-line:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+}
+
+// ─ Mobile overlay ─
+.nav-mobile {
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: rgba(17,17,18,0.97);
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s var(--cubic), visibility 0.4s;
+
+  &.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(28px, 5vw, 40px);
+  }
+
+  &__link {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+    letter-spacing: -0.02em;
+    color: var(--c-white);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: color 0.3s var(--cubic);
+
+    &:hover { color: var(--c-lime); }
+  }
+
+  &__btn {
+    opacity: 0;
+    transform: translateY(30px);
+    margin-top: 12px;
+  }
+
+  @media (min-width: 769px) { display: none !important; }
+}
+</style>

@@ -1,0 +1,135 @@
+---
+/**
+ * Stats — Movement data section (Lando "On Track" inspired)
+ * - Wrapped in a large card container
+ * - Lime accent line at top
+ * - 4-column stats grid with counter animation
+ * - Split-text heading
+ */
+const stats = [
+  { value: 73, suffix: "%", source: "2025 Data", label: "of new businesses are solo-founded", color: "#D2FF00" },
+  { value: 50, suffix: "K+", source: "Growing", label: "solo founders leveraging AI daily", color: "#ca457b" },
+  { value: 10, suffix: "×", source: "Measured", label: "productivity gain with AI tools", color: "#9fa1df" },
+  { value: 1, suffix: "→∞", source: "The OPC Way", label: "one person, infinite leverage", color: "#D2FF00" },
+];
+---
+
+<section class="stats" id="stats" data-theme="light">
+  <div class="container-wide">
+    <div class="stats__card">
+      <!-- Lime accent line -->
+      <div class="stats__accent-line" aria-hidden="true"></div>
+      <!-- Decorative L-shaped SVG draw line -->
+      <svg class="stats__deco-line" viewBox="0 0 200 200" aria-hidden="true">
+        <path d="M10,10 L10,190 L190,190" stroke="var(--c-lime)" stroke-width="1" fill="none" data-draw-line />
+      </svg>
+
+      <div class="stats__inner container">
+        <div class="section-label" data-anim="clip-left">
+          <span class="section-label__dot"></span>
+          <span>The Movement</span>
+        </div>
+
+        <h2 class="stats__heading" data-split-text>
+          <div class="split-line"><span class="split-word">The</span> <span class="split-word">OPC</span> <span class="split-word">era</span></div>
+          <div class="split-line"><span class="split-word">is</span> <span class="split-word stats__lime">here.</span></div>
+        </h2>
+
+        <div class="stats__grid">
+          {stats.map((s) => (
+            <div class="stats__item reveal" data-anim="fade">
+              <span class="stats__source">{s.source}</span>
+              <span class="stats__number" data-counter={s.value} data-suffix={s.suffix} style={`color: ${s.color}; visibility: hidden;`}>&nbsp;</span>
+              <span class="stats__label">{s.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+.stats {
+  padding: var(--section-pad) 0;
+
+  &__card {
+    background: var(--c-card);
+    border: 1px solid var(--c-border);
+    border-radius: clamp(16px, 2vw, 28px);
+    padding: clamp(56px, 7vw, 100px) 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  &__accent-line {
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 0%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--c-lime) 30%, var(--c-lime) 70%, transparent);
+    opacity: 0.4;
+  }
+
+  &__deco-line {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    width: 120px;
+    height: 120px;
+    opacity: 0.15;
+    path {
+      stroke-dasharray: 600;
+      stroke-dashoffset: 600;
+    }
+  }
+
+  &__heading {
+    font-size: var(--fs-h2);
+    margin-bottom: clamp(48px, 6vw, 80px);
+  }
+  &__lime { color: var(--c-lime); }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(20px, 3vw, 48px);
+    @media (max-width: 1024px) { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 480px) { grid-template-columns: 1fr; }
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: clamp(16px, 2vw, 24px);
+    border-top: 1px solid var(--c-border);
+  }
+
+  &__source {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: var(--fs-tag);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-grey-2);
+  }
+
+  &__number {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 5.5vw, 4.5rem);
+    color: var(--c-lime);
+    letter-spacing: -0.04em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+
+  &__label {
+    font-size: var(--fs-body);
+    color: var(--c-grey-1);
+    line-height: 1.5;
+  }
+}
+</style>

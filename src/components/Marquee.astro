@@ -1,0 +1,89 @@
+---
+/**
+ * Marquee — Enhanced with SVG decorators, glow, differential speed
+ */
+const items = [
+  { text: "One Person Company", style: "stroke" },
+  { text: "", style: "icon" },
+  { text: "AI Powered", style: "stroke" },
+  { text: "", style: "icon" },
+  { text: "Build Solo", style: "filled" },
+  { text: "", style: "icon" },
+  { text: "Ship Fast", style: "stroke" },
+  { text: "", style: "icon" },
+  { text: "Vibe Coding", style: "filled" },
+  { text: "", style: "icon" },
+  { text: "Scale Infinite", style: "stroke" },
+  { text: "", style: "icon" },
+];
+---
+
+<div class="marquee-section marquee-section--glow" aria-hidden="true">
+  <div class="marquee-w">
+    <div class="marquee-w__track">
+      {items.map(i => (
+        i.style === "icon" ? (
+          <span class="marquee-w__item marquee-w__item--symbol">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="marquee-icon">
+              <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" fill="currentColor"/>
+            </svg>
+          </span>
+        ) : (
+          <span class={`marquee-w__item marquee-w__item--${i.style}`}>{i.text}</span>
+        )
+      ))}
+      {items.map(i => (
+        i.style === "icon" ? (
+          <span class="marquee-w__item marquee-w__item--symbol">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" class="marquee-icon">
+              <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z" fill="currentColor"/>
+            </svg>
+          </span>
+        ) : (
+          <span class={`marquee-w__item marquee-w__item--${i.style}`}>{i.text}</span>
+        )
+      ))}
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+.marquee-section {
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+  padding: clamp(16px, 2.5vw, 32px) 0;
+  overflow: hidden;
+  position: relative;
+
+  &--glow {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(210,255,0,0.3), transparent);
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(210,255,0,0.15), transparent);
+    }
+  }
+}
+
+.marquee-icon {
+  color: var(--c-lime);
+  opacity: 0.4;
+  width: clamp(16px, 2vw, 24px);
+  height: clamp(16px, 2vw, 24px);
+}
+
+</style>

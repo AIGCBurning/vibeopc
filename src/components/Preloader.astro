@@ -1,0 +1,191 @@
+---
+/**
+ * Preloader — Cinematic multi-phase entrance sequence
+ * Phase 1: Scan line draws across screen
+ * Phase 2: Logo letters clip-reveal individually
+ * Phase 3: Counter + progress bar
+ * Phase 4: Horizontal curtain split reveal
+ * Phase 5: Handoff → Hero cascade + Nav slide-in
+ */
+---
+
+<div class="preloader" id="preloader" aria-hidden="true">
+  <!-- Dual curtain panels -->
+  <div class="preloader__curtain preloader__curtain--left" id="preloader-curtain-l"></div>
+  <div class="preloader__curtain preloader__curtain--right" id="preloader-curtain-r"></div>
+
+  <!-- Scan line -->
+  <div class="preloader__scanline" id="preloader-scan"></div>
+
+  <!-- Center content -->
+  <div class="preloader__center">
+    <div class="preloader__logo" id="preloader-logo">
+      <span class="preloader__char" data-pre-char>V</span>
+      <span class="preloader__char" data-pre-char>I</span>
+      <span class="preloader__char" data-pre-char>B</span>
+      <span class="preloader__char" data-pre-char>E</span>
+      <span class="preloader__char preloader__char--accent" data-pre-char>O</span>
+      <span class="preloader__char preloader__char--accent" data-pre-char>P</span>
+      <span class="preloader__char preloader__char--accent" data-pre-char>C</span>
+    </div>
+
+    <div class="preloader__bar-wrap" id="preloader-bar-wrap">
+      <div class="preloader__bar" id="preloader-bar"></div>
+    </div>
+
+    <div class="preloader__tagline" id="preloader-tagline">
+      <span data-pre-word>Build</span>
+      <span data-pre-word>Your</span>
+      <span data-pre-word>Empire.</span>
+    </div>
+  </div>
+
+  <!-- Corner details -->
+  <div class="preloader__corner preloader__corner--tl" id="pre-corner-tl">
+    <span>vibeOPC</span>
+    <span>©2026</span>
+  </div>
+  <div class="preloader__corner preloader__corner--br" id="pre-corner-br">
+    <span id="preloader-counter">000</span>
+  </div>
+</div>
+
+<style lang="scss">
+.preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  pointer-events: all;
+  overflow: hidden;
+
+  // Curtain split panels
+  &__curtain {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50%;
+    background: #0a0a0b;
+    z-index: 3;
+    will-change: transform;
+
+    &--left { left: 0; }
+    &--right { right: 0; }
+  }
+
+  // Horizontal scan line
+  &__scanline {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #D2FF00, transparent);
+    z-index: 5;
+    transform: translateY(-50%);
+    will-change: width;
+    opacity: 0;
+  }
+
+  // Center content
+  &__center {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+  }
+
+  // Logo: individual characters
+  &__logo {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+
+  &__char {
+    display: inline-block;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3.5rem, 10vw, 8rem);
+    letter-spacing: -0.05em;
+    color: #ffffff;
+    clip-path: inset(0 100% 0 0);
+    will-change: clip-path;
+    line-height: 1;
+
+    &--accent { color: #D2FF00; }
+  }
+
+  // Progress bar
+  &__bar-wrap {
+    width: clamp(120px, 20vw, 200px);
+    height: 2px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+    opacity: 0;
+  }
+
+  &__bar {
+    width: 0%;
+    height: 100%;
+    background: #D2FF00;
+    border-radius: 2px;
+    will-change: width;
+  }
+
+  // Tagline words
+  &__tagline {
+    display: flex;
+    gap: 10px;
+    opacity: 0;
+
+    span {
+      font-family: 'Inter Tight', sans-serif;
+      font-weight: 600;
+      font-size: clamp(0.65rem, 1vw, 0.8rem);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      display: inline-block;
+      transform: translateY(12px);
+      opacity: 0;
+    }
+  }
+
+  // Corner details
+  &__corner {
+    position: absolute;
+    z-index: 4;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 500;
+    font-size: 0.6rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    opacity: 0;
+
+    &--tl {
+      top: 28px;
+      left: 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    &--br {
+      bottom: 28px;
+      right: 32px;
+
+      span {
+        font-variant-numeric: tabular-nums;
+        font-size: 0.7rem;
+        letter-spacing: 0.05em;
+      }
+    }
+  }
+}
+</style>

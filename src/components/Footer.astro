@@ -1,0 +1,218 @@
+---
+/**
+ * Footer — SVG mask reveal with animated gradient + scroll-triggered clip expand
+ */
+const year = new Date().getFullYear();
+const socials = [
+  { label: "X / Twitter", href: "https://x.com/" },
+  { label: "Discord", href: "https://discord.gg/" },
+  { label: "GitHub", href: "https://github.com/" },
+  { label: "Contact", href: "mailto:hello@vibeopc.com" },
+];
+---
+
+<footer class="footer" id="footer">
+  <!-- SVG Masked brand text reveal -->
+  <div class="footer__hero" aria-hidden="true">
+    <div class="footer__hero-svg-wrap" data-footer-reveal>
+      <svg class="footer__hero-svg" viewBox="0 0 900 120" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="footer-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#D2FF00">
+              <animate attributeName="stop-color" values="#D2FF00;#ca457b;#9fa1df;#D2FF00" dur="6s" repeatCount="indefinite"/>
+            </stop>
+            <stop offset="50%" stop-color="#ca457b">
+              <animate attributeName="stop-color" values="#ca457b;#9fa1df;#D2FF00;#ca457b" dur="6s" repeatCount="indefinite"/>
+            </stop>
+            <stop offset="100%" stop-color="#9fa1df">
+              <animate attributeName="stop-color" values="#9fa1df;#D2FF00;#ca457b;#9fa1df" dur="6s" repeatCount="indefinite"/>
+            </stop>
+          </linearGradient>
+          <clipPath id="footer-text-clip">
+            <text x="450" y="100" text-anchor="middle" font-family="'Inter Tight', sans-serif" font-weight="900" font-size="140" letter-spacing="-8">VIBEOPC</text>
+          </clipPath>
+        </defs>
+        <rect x="0" y="0" width="900" height="120" fill="url(#footer-grad)" clip-path="url(#footer-text-clip)"/>
+      </svg>
+    </div>
+    <div class="footer__hero-gradient"></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="footer__bottom container">
+    <div class="footer__row">
+      <div class="footer__brand">
+        <a href="/" class="footer__logo">
+          <span class="footer__logo-v">VIBE</span><span class="footer__logo-o">OPC</span>
+        </a>
+        <p class="footer__tagline">The home base for AI-era<br/>one-person companies.</p>
+      </div>
+      <nav class="footer__nav" aria-label="Footer">
+        <span class="footer__nav-label">Links</span>
+        <div class="footer__links">
+          {socials.map(s => {
+            const isExternal = !s.href.startsWith("mailto:");
+            return isExternal ? (
+              <a href={s.href} target="_blank" rel="noopener noreferrer" class="footer__link footer__link--external" data-footer-link>
+                {s.label}
+                <svg class="footer__ext-icon" width="12" height="12" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M5 3h8v8M13 3L5 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span class="sr-only">(opens in new tab)</span>
+              </a>
+            ) : (
+              <a href={s.href} class="footer__link" data-footer-link>{s.label}</a>
+            );
+          })}
+        </div>
+      </nav>
+    </div>
+
+    <div class="footer__legal" data-footer-legal>
+      <p>&copy; {year} vibeOPC.com</p>
+      <p>Made with AI, shipped by one person.</p>
+    </div>
+  </div>
+</footer>
+
+<style lang="scss">
+.footer {
+  position: relative;
+
+  &__hero {
+    position: relative;
+    overflow: hidden;
+    padding: clamp(40px, 8vw, 100px) 0 0;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__hero-svg-wrap {
+    width: 100%;
+    max-width: 1200px;
+    padding: 0 clamp(20px, 4vw, 48px);
+    clip-path: inset(0 50% 0 50%);
+    transition: clip-path 0s;
+    will-change: clip-path;
+  }
+
+  &__hero-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    user-select: none;
+  }
+
+  &__hero-gradient {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60%;
+    background: linear-gradient(to top, var(--c-bg) 10%, transparent 100%);
+    pointer-events: none;
+  }
+
+  &__bottom {
+    padding: clamp(40px, 5vw, 72px) clamp(20px, 4vw, 48px) clamp(28px, 4vw, 44px);
+  }
+
+  &__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 48px;
+    margin-bottom: clamp(32px, 4vw, 56px);
+
+    @media (max-width: 640px) {
+      flex-direction: column;
+      gap: 32px;
+    }
+  }
+
+  &__brand { display: flex; flex-direction: column; gap: 12px; }
+
+  &__logo {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: -0.05em;
+    transition: opacity 0.3s var(--cubic);
+    &:hover { opacity: 0.6; }
+  }
+  &__logo-v { color: var(--c-lime); }
+  &__logo-o { color: var(--c-white); }
+
+  &__tagline {
+    color: var(--c-grey-2);
+    font-size: 0.88rem;
+    line-height: 1.5;
+  }
+
+  &__nav { display: flex; flex-direction: column; gap: 14px; }
+
+  &__nav-label {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: var(--fs-tag);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--c-grey-2);
+  }
+
+  &__links {
+    display: flex;
+    gap: clamp(20px, 3vw, 40px);
+  }
+
+  &__link {
+    font-size: 0.9rem;
+    color: var(--c-grey-1);
+    transition: color 0.4s var(--cubic);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--c-lime);
+      transition: width 0.6s var(--cubic);
+    }
+
+    &:hover {
+      color: var(--c-lime);
+      &::after { width: 100%; }
+    }
+  }
+
+  &__ext-icon {
+    transition: transform 0.4s var(--cubic);
+  }
+  &__link--external:hover &__ext-icon,
+  &__link--external:hover .footer__ext-icon {
+    transform: translate(2px, -2px);
+  }
+
+  &__legal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: clamp(20px, 2vw, 28px);
+    border-top: 1px solid var(--c-border);
+    gap: 16px;
+
+    @media (max-width: 480px) {
+      flex-direction: column;
+      text-align: center;
+    }
+
+    p {
+      font-size: 0.75rem;
+      color: var(--c-grey-2);
+    }
+  }
+}
+</style>

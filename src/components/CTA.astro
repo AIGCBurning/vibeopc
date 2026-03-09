@@ -1,0 +1,220 @@
+---
+/**
+ * CTA — Email collection with premium form (Lando newsletter style)
+ * - 2-column layout: headline left, form right
+ * - Glow input on focus
+ * - Success state with animation
+ */
+---
+
+<section class="cta" id="cta">
+  <div class="container">
+    <div class="cta__grid">
+      <!-- Left: Content -->
+      <div class="cta__content">
+        <div class="section-label reveal" data-anim="fade">
+          <span class="section-label__dot"></span>
+          <span>Early Access</span>
+        </div>
+        <h2 class="cta__heading" data-split-text>
+          <div class="split-line"><span class="split-word">Be</span> <span class="split-word">the</span></div>
+          <div class="split-line"><span class="split-word">first</span> <span class="split-word">to</span></div>
+          <div class="split-line"><span class="split-word cta__lime">know.</span></div>
+        </h2>
+        <p class="cta__desc reveal" data-anim="fade">
+          Get early access to the platform, exclusive AI workflow templates, and the OPC playbook — before anyone else.
+        </p>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="cta__form-area" data-anim="clip-left">
+        <form class="cta__form" id="waitlist-form">
+          <div class="cta__field">
+            <label for="cta-email" class="cta__label">Email address</label>
+            <input
+              type="email"
+              id="cta-email"
+              name="email"
+              placeholder="you@example.com"
+              required
+              autocomplete="email"
+              class="cta__input"
+            />
+            <span class="cta__error" id="cta-error" aria-live="polite"></span>
+          </div>
+          <button type="submit" class="btn-primary cta__submit">
+            <span class="btn-text"><span class="btn-text__inner" data-text="Get Early Access">Get Early Access</span></span>
+            <svg class="btn-icon" width="18" height="18" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <p class="cta__note">No spam, ever. Unsubscribe anytime.</p>
+        </form>
+
+        <div class="cta__success" id="form-success">
+          <svg class="cta__success-check" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--c-lime)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+            <polyline points="22 4 12 14.01 9 11.01"/>
+          </svg>
+          <h3 class="cta__success-title">You're on the list.</h3>
+          <p class="cta__success-desc">We'll reach out when it's time to build.</p>
+          <a href="#" class="cta__reset-link" id="form-reset">Submit another email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+.cta {
+  padding: var(--section-pad) 0;
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: clamp(48px, 8vw, 120px);
+    align-items: center;
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+  }
+
+  &__heading {
+    font-size: var(--fs-h2);
+    margin-bottom: clamp(16px, 2vw, 28px);
+  }
+  &__lime { color: var(--c-lime); }
+
+  &__desc {
+    font-size: var(--fs-body);
+    color: var(--c-grey-1);
+    line-height: 1.75;
+    max-width: 420px;
+  }
+
+  // Form
+  &__form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  &__field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__label {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 600;
+    font-size: var(--fs-tag);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-grey-2);
+  }
+
+  &__input {
+    width: 100%;
+    padding: 20px 24px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    color: var(--c-white);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--c-border);
+    border-radius: 14px;
+    outline: none;
+    transition: border-color 0.5s var(--cubic), box-shadow 0.5s var(--cubic), background 0.5s var(--cubic);
+
+    &::placeholder { color: var(--c-grey-3); }
+
+    &:focus {
+      border-color: var(--c-lime);
+      background: rgba(210,255,0,0.015);
+      box-shadow: 0 0 0 3px rgba(210,255,0,0.06), 0 0 40px rgba(210,255,0,0.04);
+    }
+
+    &:hover:not(:focus) {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.12);
+    }
+  }
+
+  &__submit {
+    width: 100%;
+    padding: 20px;
+    font-size: 0.82rem;
+    border-radius: 14px;
+  }
+
+  &__note {
+    font-size: 0.78rem;
+    color: var(--c-grey-2);
+    text-align: center;
+  }
+
+  // Error state
+  &__error {
+    font-size: 0.78rem;
+    color: #ff4444;
+    min-height: 1.2em;
+    transition: opacity 0.3s var(--cubic);
+  }
+
+  &__input.is-error {
+    border-color: #ff4444 !important;
+    box-shadow: 0 0 0 3px rgba(255,68,68,0.1);
+    animation: shake 0.5s var(--cubic);
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(6px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(4px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    @keyframes shake {
+      0%, 100% { transform: none; }
+    }
+  }
+
+  // Success
+  &__success {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 16px;
+    padding: 48px 24px;
+
+    &.is-visible {
+      display: flex;
+    }
+  }
+
+  &__success-check { margin-bottom: 8px; }
+
+  &__success-title {
+    font-size: 1.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  &__success-desc {
+    color: var(--c-grey-1);
+    font-size: var(--fs-body);
+  }
+
+  &__reset-link {
+    font-size: 0.85rem;
+    color: var(--c-lime);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: opacity 0.3s var(--cubic);
+    cursor: pointer;
+    &:hover { opacity: 0.7; }
+  }
+}
+
+</style>

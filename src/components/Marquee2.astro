@@ -1,0 +1,93 @@
+---
+/**
+ * Marquee2 — Reverse direction with SVG decorators + differential speed
+ */
+const items = [
+  { text: "Vibe Coding", style: "filled" },
+  { text: "", style: "icon" },
+  { text: "Launch Fast", style: "stroke" },
+  { text: "", style: "icon" },
+  { text: "Scale Solo", style: "filled" },
+  { text: "", style: "icon" },
+  { text: "AI Native", style: "stroke" },
+  { text: "", style: "icon" },
+  { text: "No Permission Needed", style: "filled" },
+  { text: "", style: "icon" },
+  { text: "Build In Public", style: "stroke" },
+  { text: "", style: "icon" },
+];
+---
+
+<div class="marquee-section marquee-section--glow" aria-hidden="true">
+  <div class="marquee-w marquee-w--reverse marquee-w--fast">
+    <div class="marquee-w__track">
+      {items.map(i => (
+        i.style === "icon" ? (
+          <span class="marquee-w__item marquee-w__item--symbol">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="marquee-icon">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        ) : (
+          <span class={`marquee-w__item marquee-w__item--${i.style}`}>{i.text}</span>
+        )
+      ))}
+      {items.map(i => (
+        i.style === "icon" ? (
+          <span class="marquee-w__item marquee-w__item--symbol">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" class="marquee-icon">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        ) : (
+          <span class={`marquee-w__item marquee-w__item--${i.style}`}>{i.text}</span>
+        )
+      ))}
+    </div>
+  </div>
+</div>
+
+<style lang="scss">
+.marquee-section {
+  border-top: 1px solid var(--c-border);
+  border-bottom: 1px solid var(--c-border);
+  padding: clamp(16px, 2.5vw, 32px) 0;
+  overflow: hidden;
+  position: relative;
+
+  &--glow {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(210,255,0,0.3), transparent);
+    }
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(210,255,0,0.15), transparent);
+    }
+  }
+}
+
+.marquee-w--fast .marquee-w__track {
+  animation-duration: 22s;
+}
+
+.marquee-icon {
+  color: var(--c-lime);
+  opacity: 0.4;
+  width: clamp(16px, 2vw, 20px);
+  height: clamp(16px, 2vw, 20px);
+}
+
+</style>

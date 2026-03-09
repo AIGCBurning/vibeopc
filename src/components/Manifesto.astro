@@ -1,0 +1,117 @@
+---
+/**
+ * Manifesto — Pinned fullscreen scroll-driven narrative (Lando-style immersive)
+ * - Pinned for 300vh with ScrollTrigger
+ * - Background gradient transitions: dark → purple → lime → dark
+ * - Text clip-path reveal + scale
+ * - Large decorative "OPC" parallax text
+ */
+const lines = [
+  { text: "You don't need a team.", accent: false },
+  { text: "You don't need a co-founder.", accent: false },
+  { text: "You don't need permission.", accent: false },
+  { text: "You need a vision —", accent: false },
+  { text: "and AI.", accent: true },
+  { text: "One person. Infinite leverage.", accent: true },
+  { text: "Welcome to the OPC era.", accent: true },
+];
+---
+
+<section class="manifesto" id="manifesto">
+  <div class="manifesto__bg" data-manifesto-bg></div>
+  <div class="manifesto__deco" data-manifesto-deco aria-hidden="true">OPC</div>
+
+  <div class="manifesto__inner container">
+    <div class="section-label" data-anim="clip-left">
+      <span class="section-label__dot"></span>
+      <span>Manifesto</span>
+    </div>
+
+    <div class="manifesto__body">
+      {lines.map((l, i) => (
+        <p
+          class={`manifesto__line ${l.accent ? 'manifesto__line--accent' : ''}`}
+          data-manifesto-line
+          data-line-index={i}
+        >
+          {l.text}
+        </p>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+.manifesto {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--c-bg);
+    transition: background 0.1s linear;
+  }
+
+  &__deco {
+    position: absolute;
+    z-index: 0;
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 900;
+    font-size: clamp(20rem, 45vw, 50rem);
+    letter-spacing: -0.06em;
+    line-height: 0.8;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255,255,255,0.03);
+    user-select: none;
+    pointer-events: none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    will-change: transform;
+  }
+
+  &__inner {
+    position: relative;
+    z-index: 1;
+    padding: var(--section-pad) 0;
+  }
+
+  &__body {
+    max-width: 960px;
+  }
+
+  &__line {
+    font-family: 'Inter Tight', sans-serif;
+    font-weight: 800;
+    font-size: clamp(2rem, 5.5vw, 4.2rem);
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    margin-bottom: clamp(8px, 1.5vw, 18px);
+    // Initial state: dimmed + blurred + clipped
+    opacity: 0.08;
+    filter: blur(4px);
+    clip-path: inset(0 40% 0 0);
+    transform: translateY(0) scale(0.97);
+    transition: opacity 0.9s var(--cubic), filter 0.9s var(--cubic), color 0.9s var(--cubic), clip-path 0.9s var(--cubic), transform 0.9s var(--cubic);
+    will-change: opacity, filter, clip-path, transform;
+
+    &.is-active {
+      opacity: 1;
+      filter: blur(0);
+      clip-path: inset(0 0% 0 0);
+      transform: translateY(0) scale(1);
+    }
+
+    &--accent.is-active {
+      color: var(--c-lime);
+    }
+
+    &:last-child { margin-bottom: 0; }
+  }
+}
+</style>
