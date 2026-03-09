@@ -34,7 +34,7 @@ export async function onRequestPost(context) {
       },
       body: JSON.stringify({
         from: "vibeOPC Waitlist <onboarding@resend.dev>",
-        to: "838237663@qq.com",
+        to: "ironm6028@gmail.com",
         subject: "New Waitlist Signup: " + email,
         html: "<h2>New Waitlist Signup</h2><p><strong>Email:</strong> " + email + "</p><p><strong>Time:</strong> " + new Date().toISOString() + "</p>",
       }),
